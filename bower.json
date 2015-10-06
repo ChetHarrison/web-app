@@ -1,0 +1,17 @@
+{
+  "name": "new-app",
+  "version": "0.1.0",
+  "dependencies": {
+    "almond": "~0.3.1",
+    "jquery": "~1.9.0",
+    "requirejs": "~2.1.5",
+    "sass-bootstrap": "~3.0.0",
+    "handlebars": "~4.0.3",
+    "backbone.marionette": "marionette#~2.4.3",
+    "backbonefire": "~0.5.1",
+    "backbone.radio": "~1.0.2"
+  },
+  "resolutions": {
+    "underscore": ">=1.7.0"
+  }
+}

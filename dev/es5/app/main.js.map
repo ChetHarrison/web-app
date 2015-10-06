@@ -1,0 +1,1 @@
+{"version":3,"sources":["dev/es6/app/main.js"],"names":[],"mappings":";AAAA,cAAY,CAAC;;;;MAEN,QAAQ;;MACR,KAAK;;AAEZ,OAAK,CAAE,QAAQ,CAAC,QAAQ,EAAE,CAAE,CAAC","file":"dev/es6/app/main.js","sourcesContent":["'use strict';\n\nimport messages from 'app/messages';\nimport print from 'lib/print';\n\nprint( messages.getHello() );\n"]}

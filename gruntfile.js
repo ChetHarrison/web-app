@@ -32,7 +32,7 @@ module.exports = function( grunt ) {
 			},
 			change: {
 				files: [
-					'<%= dir.dev %>**/*',
+					'<%= dir.es6 %>**/*',
 					'gruntfile.js'
 				],
 				tasks: [ 'build' ]
@@ -40,7 +40,7 @@ module.exports = function( grunt ) {
 		},
 
 		clean: {
-			build: [ '<%= dir.prod %>' ]
+			build: [ '<%= dir.prod %>', '<%= dir.es5 %>' ]
 		},
 
 		babel : {
@@ -51,9 +51,9 @@ module.exports = function( grunt ) {
 			app : {
 				files : [ {
 					expand : true,
-					cwd : '',
+					cwd : '<%= dir.es6 %>',
 					src : [
-						'<%= dir.es6 %>**/*.js'
+						'**/*.js'
 					],
 
 					// Hack to place app and test transpiles in the
@@ -64,9 +64,9 @@ module.exports = function( grunt ) {
 			tests : {
 				files : [ {
 					expand : true,
-					cwd : '.',
-					src : [ '<%= dir.tests %>/es6/**/*-spec.js' ],
-					dest : '<%= dir.tests %>/es5/**/*-spec.js'
+					cwd : '<%= dir.tests %>/es6/',
+					src : [ '**/*-spec.js' ],
+					dest : '<%= dir.tests %>/es5/'
 				} ]
 			}
 		},
@@ -296,7 +296,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask(
 	'build',
 	'Build production files to "dest" folder.',
-	[ 'clean', 'imagemin', 'handlebars', 'copy', 'requirejs', 'cssmin' ]
+	[ 'clean', 'imagemin', 'handlebars', 'copy', 'babel', 'requirejs', 'cssmin' ]
 	);
 
 	grunt.registerTask(

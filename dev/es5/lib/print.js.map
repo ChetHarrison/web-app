@@ -1,0 +1,1 @@
+{"version":3,"sources":["dev/es6/lib/print.js"],"names":[],"mappings":";AAAA,cAAY,CAAC;;mBAEE,UAAE,GAAG;WAAM,OAAO,CAAC,GAAG,CAAE,GAAG,CAAE;GAAA","file":"dev/es6/lib/print.js","sourcesContent":["'use strict';\n\nexport default ( msg ) => console.log( msg );\n"]}

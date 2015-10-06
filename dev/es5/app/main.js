@@ -1,15 +1,12 @@
-define( function( require ) {
+define(["exports", "app/messages", "lib/print"], function (exports, _appMessages, _libPrint) {
+  "use strict";
 
-	// Load any app-specific modules
-	// with a relative require call,
-	// like:
-	var messages = require( 'app/messages' );
+  var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	console.log( messages );
+  var messages = _interopRequire(_appMessages);
 
-	// Load library/vendor modules using
-	// full IDs, like:
-	var print = require( 'lib/print' );
+  var print = _interopRequire(_libPrint);
 
-	print( messages.getHello() );
-} );
+  print(messages.getHello());
+});
+//# sourceMappingURL=main.js.map

@@ -4,10 +4,11 @@
 // except for 'app' ones, which are in a sibling
 // directory.
 requirejs.config( {
-	baseUrl: '../bower_modules',
+	baseUrl: '.',
 	paths: {
-		app: '../dev/es5/app',
-		lib: '../dev/es5/lib'
+		app: 'es5/app',
+		lib: 'es5/lib',
+		bower: '../bower_modules'
 	}
 } );
 

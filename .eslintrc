@@ -139,7 +139,7 @@
         "global-strict": [0, "never"],
         "guard-for-in": 0,
         "handle-callback-err": 0,
-        "indent": [4, "spaces"],
+        "indent": [1, "tab"],
         "key-spacing": 0,
         "max-depth": [0, 4],
         "max-len": [0, 80, 4],

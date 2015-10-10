@@ -7,4 +7,4 @@
 // Here is a longer description of this module
 'use strict';
 
-export default ( msg ) => console.log( msg );
+export default ( msg ) => document.write( msg );

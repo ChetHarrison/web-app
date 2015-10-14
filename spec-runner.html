@@ -44,10 +44,11 @@
 
     
       require.config({
-  "baseUrl": ".grunt/grunt-contrib-jasmine/dev",
+  "baseUrl": "foo/do",
   "paths": {
-    "app": "es5/app",
-    "lib": "es5/lib",
+    "main": "es5/app/main",
+    "messages": "es5/app/messages",
+    "lib": "es5/app/lib",
     "bower": "../bower_modules"
   }
 });
@@ -62,18 +63,9 @@
     function launchTest() {
     require([
       
-        
-        'es5/app/main' ,
-      
-        
-        'es5/app/messages' ,
-      
-        
-        'es5/lib/print' 
-      
     ],
     function(){
-      require(['reports/tests/es5/app/main-spec.js','reports/tests/es5/app/messages-spec.js','reports/tests/es5/lib/print-spec.js','.grunt/grunt-contrib-jasmine/grunt-template-jasmine-istanbul/reporter.js','.grunt/grunt-contrib-jasmine/reporter.js'], function(){
+      require(['dev/es5/tests/lib/print-spec.js','dev/es5/tests/main-spec.js','dev/es5/tests/messages-spec.js','.grunt/grunt-contrib-jasmine/reporter.js'], function(){
         startTests();
       });
     }

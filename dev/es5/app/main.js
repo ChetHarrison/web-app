@@ -1,4 +1,4 @@
-define(["exports", "app/messages", "lib/print"], function (exports, _appMessages, _libPrint) {
+define(["exports", "messages", "lib/print"], function (exports, _messages, _libPrint) {
   //   Module      : main.js
   // ----------------------------
   //		Description : kickoff the app.
@@ -10,7 +10,7 @@ define(["exports", "app/messages", "lib/print"], function (exports, _appMessages
 
   var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-  var messages = _interopRequire(_appMessages);
+  var messages = _interopRequire(_messages);
 
   var print = _interopRequire(_libPrint);
 

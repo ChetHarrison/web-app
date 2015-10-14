@@ -4,16 +4,15 @@
 // except for 'app' ones, which are in a sibling
 // directory.
 requirejs.config( {
-	baseUrl: '.',
+	baseUrl: '',
 	paths: {
-		app: 'es5/app',
-		lib: 'es5/lib',
+		main: 'es5/app/main',
+		messages: 'es5/app/messages',
+		lib: 'es5/app/lib',
 		bower: '../bower_modules'
 	}
 } );
 
 // Start loading the main app file. Put all of
 // your application logic in there.
-requirejs( [ 'app/main' ], function() {
-	// console.log( 'foo' );
-} );
+requirejs( [ 'main' ], function() { } );

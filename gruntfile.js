@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 			img: 'dev/img/',
 			prod: 'prod/',
 			bower: 'bower_modules/',
-			tests: 'reports/tests/',
+			tests: 'dev/es5/tests/',
 			docs: 'reports/docs/',
 			analysis: 'reports/analysis/',
 			coverage: 'reports/coverage/'
@@ -119,7 +119,7 @@ module.exports = function(grunt) {
 			change: {
 				files: [
 					'<%= dir.es6 %>**/*',
-					'<%= dir.tests %>es6/**/*',
+					'dev/es6/tests/**/*',
 					'gruntfile.js'
 				],
 				tasks: ['build']
@@ -130,7 +130,8 @@ module.exports = function(grunt) {
 			app: ['<%= dir.prod %>', '<%= dir.es5 %>'],
 			tests: ['<%= dir.tests %>es5'],
 			temp: ['.grunt', '.sass-cache'],
-			docs: ['reports/docs']
+			docs: ['reports/docs'],
+			css: ['dev/css']
 		},
 
 		babel: {
@@ -141,22 +142,22 @@ module.exports = function(grunt) {
 			app: {
 				files: [{
 					expand: true,
-					cwd: '<%= dir.es6 %>',
+					cwd: '<%= dir.es6 %>app',
 					src: [
 						'**/*.js'
 					],
 
 					// Hack to place app and test transpiles in the
 					// same build dir.
-					dest: '<%= dir.es5 %>'
+					dest: '<%= dir.es5 %>app'
 				}]
 			},
 			tests: {
 				files: [{
 					expand: true,
-					cwd: '<%= dir.tests %>/es6/',
+					cwd: 'dev/es6/tests',
 					src: ['**/*-spec.js'],
-					dest: '<%= dir.tests %>/es5/'
+					dest: '<%= dir.es5 %>tests'
 				}]
 			}
 		},
@@ -181,7 +182,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files: [{
-					src: ['<%= dir.es6 %>**/*.hbs'],
+					src: ['<%= dir.es6 %>app/**/*.hbs'],
 					dest: '<%= dir.es5 %>tpl/tpl.js'
 				}]
 			}
@@ -191,18 +192,25 @@ module.exports = function(grunt) {
 			build: {
 				options: {
 
-					// "name", "include", and "insertRequire" paths
-					// are relative to the baseUrl in require-config.js
-					name: 'bower/almond/almond',
+					// READ THIS!! 99% of requirejs pain is a combination
+					// of fucking up path configuration and shitty error
+					// messages, if any. So here is the key think to know
+					// this baseUrl needs to be set to the location of the
+					// require-config file AND the baseUrl property of the
+					// require-config file needs to be set to its current
+					// dir, as in `baseUrl: './'`
+					// https://github.com/jrburke/r.js/blob/master/build/example.build.js
+					baseUrl: 'dev',
+					// this path is relative to this tasks baseUrl option.
+					name: '../bower_modules/almond/almond',
 					include: ['require-config'],
 					insertRequire: ['require-config'],
 					wrap: true,
 					optimize: 'uglify',
 					out: '<%= dir.prod %>main.min.js',
 
-					// This will affect the "name", "include", and "insertRequire"
-					// paths. This path is relative to the gruntfile.
-					mainConfigFile: '<%= dir.dev %>require-config.js',
+					// This path is relative to the gruntfile.
+					mainConfigFile: 'dev/require-config.js',
 					replaceRequireScript: [{
 
 						// this file must exist before it will be rewritten
@@ -220,14 +228,6 @@ module.exports = function(grunt) {
 		},
 
 		copy: {
-			pdf: {
-				files: [{
-					expand: true,
-					cwd: '<%= dir.dev %>',
-					src: ['**/*.pdf'],
-					dest: '<%= dir.prod %>'
-				}]
-			},
 			index: {
 				files: [{
 					expand: true,
@@ -238,43 +238,87 @@ module.exports = function(grunt) {
 			}
 		},
 
-		meta: {
-			package: grunt.file.readJSON('package.json'),
-			src: {
-				main: 'dev/es5',
-				test: 'reports/tests/es5'
-			},
-			bin: {
-				coverage: 'reports/coverage'
-			}
-		},
 		jasmine: {
-			coverage: {
-				src: '<%= meta.src.main %>/**/*.js',
+			options : {
+				specs: 'dev/es5/tests/**/*-spec.js',
+			},
+
+			phantom: {
 				options: {
-					specs: '<%= meta.src.test %>/**/*-spec.js',
-					template: require('grunt-template-jasmine-istanbul'),
+
+					// host: "http://127.0.0.1:" + phantomPort + "/",
+					display: 'full', // short or none
+					outfile: 'spec-runner.html',
+					template: require( 'grunt-template-jasmine-requirejs' ),
 					templateOptions: {
-						coverage: '<%= meta.bin.coverage %>/coverage.json',
-						report: [{
-							type: 'html',
-							options: {
-								dir: '<%= meta.bin.coverage %>/html'
-							}
-						}, {
-							type: 'text-summary'
-						}],
-						template: require('grunt-template-jasmine-requirejs'),
+						requireConfigFile: 'dev/require-config.js'
+					},
+					keepRunner: true
+				}
+			},
+
+			coverage: {
+				src: [ 'dev/es5/app/**/*.js' ],
+				options: {
+					template: require( 'grunt-template-jasmine-istanbul' ),
+					templateOptions: {
+						coverage: 'reports/coverage/coverage.json',
+						report: 'reports/coverage',
+						thresholds: {
+							lines: 75,
+							statements: 75,
+							branches: 75,
+							functions: 90
+						},
+
+						// 1. don"t replace src for the mixed-in template with instrumented sources
+						replace: false,
+						template: require( 'grunt-template-jasmine-requirejs' ),
 						templateOptions: {
-							requireConfigFile: '<%= dir.dev %>require-config.js',
-							requireConfig: {
-								baseUrl: '.grunt/grunt-contrib-jasmine/dev'
-							}
+							requireConfigFile: 'dev/require-config.js'
 						}
 					}
 				}
 			}
 		},
+
+		// meta: {
+		// 	package: grunt.file.readJSON('package.json'),
+		// 	src: {
+		// 		main: 'dev/es5',
+		// 		test: 'reports/tests/es5'
+		// 	},
+		// 	bin: {
+		// 		coverage: 'reports/coverage'
+		// 	}
+		// },
+		// jasmine: {
+		// 	coverage: {
+		// 		src: '<%= meta.src.main %>/**/*.js',
+		// 		options: {
+		// 			specs: '<%= meta.src.test %>/**/*-spec.js',
+		// 			template: require('grunt-template-jasmine-istanbul'),
+		// 			templateOptions: {
+		// 				coverage: '<%= meta.bin.coverage %>/coverage.json',
+		// 				report: [{
+		// 					type: 'html',
+		// 					options: {
+		// 						dir: '<%= meta.bin.coverage %>/html'
+		// 					}
+		// 				}, {
+		// 					type: 'text-summary'
+		// 				}],
+		// 				template: require('grunt-template-jasmine-requirejs'),
+		// 				templateOptions: {
+		// 					requireConfigFile: '<%= dir.dev %>require-config.js',
+		// 					requireConfig: {
+		// 						baseUrl: '.grunt/grunt-contrib-jasmine/dev'
+		// 					}
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// },
 
 		// jasmine: {
 		// 	options: {
@@ -422,36 +466,48 @@ module.exports = function(grunt) {
 
 	grunt.registerTask(
 		'setup-docs',
-		'Generate documentation using docco.', ['clean:docs', 'concat:docs', 'docco']
+		'Generate documentation using docco.',
+		['clean:docs', 'concat:docs', 'docco']
 	);
 
 	grunt.registerTask(
 		'doc',
-		'Generate documentation using docco.', ['setup-docs', 'connect:docs']
+		'Open a documentation server.',
+		['setup-docs', 'connect:docs']
 	);
 
 	grunt.registerTask(
 		'setup-tests',
-		'Build production files to "dest" folder.', ['clean:tests', 'babel:tests', 'jasmine:phantom']
+		'Transpile test.',
+		['clean:tests', 'babel:tests', 'jasmine:phantom']
+	);
+
+	grunt.registerTask(
+		'coverage',
+		'Coverage report.',
+		['clean:tests', 'babel:tests', 'jasmine:coverage']
 	);
 
 	grunt.registerTask(
 		'test',
-		'Build production files to "dest" folder.', ['setup-tests', 'connect:tests']
+		'Open a test server.',
+		['setup-tests', 'connect:tests']
 	);
 
 	grunt.registerTask(
 		'build',
-		'Build production files to "dest" folder.', [
+		'Build production files to "dest" folder.',
+		[
 			'clean:app',
 			'setup-docs',
 			'imagemin',
 			'handlebars',
 			'copy',
 			'babel:app',
+			'clean:css',
 			'compass',
 			'rename',
-			'setup-tests',
+			// 'setup-tests',
 			'requirejs',
 			'cssmin',
 			'imagemin'
@@ -460,6 +516,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask(
 		'default',
-		'Watch files and run tests', ['watch']
+		'Watch files and run tests',
+		['watch']
 	);
 };

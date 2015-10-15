@@ -9,7 +9,7 @@ define(["exports", "module"], function (exports, module) {
   "use strict";
 
   module.exports = function (msg) {
-    return document.write(msg);
+    return document.body.appendChild(document.createTextNode(msg));
   };
 });
 //# sourceMappingURL=print.js.map

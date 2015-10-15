@@ -44,7 +44,7 @@
 
     
       require.config({
-  "baseUrl": "foo/do",
+  "baseUrl": "dev",
   "paths": {
     "main": "es5/app/main",
     "messages": "es5/app/messages",
@@ -63,9 +63,18 @@
     function launchTest() {
     require([
       
+        
+        '../.grunt/grunt-contrib-jasmine/dev/es5/app/lib/print' ,
+      
+        
+        '../.grunt/grunt-contrib-jasmine/dev/es5/app/main' ,
+      
+        
+        '../.grunt/grunt-contrib-jasmine/dev/es5/app/messages' 
+      
     ],
     function(){
-      require(['dev/es5/tests/lib/print-spec.js','dev/es5/tests/main-spec.js','dev/es5/tests/messages-spec.js','.grunt/grunt-contrib-jasmine/reporter.js'], function(){
+      require(['dev/es5/tests/lib/print-spec.js','dev/es5/tests/main-spec.js','dev/es5/tests/messages-spec.js','.grunt/grunt-contrib-jasmine/grunt-template-jasmine-istanbul/reporter.js','.grunt/grunt-contrib-jasmine/reporter.js'], function(){
         startTests();
       });
     }

@@ -1,5 +1,7 @@
 'use strict';
 
+var port = 9000;
+
 module.exports = function(grunt) {
 
 	require('time-grunt')(grunt);
@@ -24,12 +26,12 @@ module.exports = function(grunt) {
 		},
 
 		port: {
-			dev: 9000,
-			prod: 9001,
-			tests: 9002,
-			coverage: 9003,
-			docs: 9004,
-			analysis: 9005
+			dev: port,
+			prod: port++,
+			tests: port++,
+			coverage: port++,
+			docs: port++,
+			analysis: port++
 		},
 
 		pkg: grunt.file.readJSON('package.json'),
@@ -79,7 +81,7 @@ module.exports = function(grunt) {
 					keepalive: true,
 					port: '<%= port.tests %>',
 					open: {
-						target: 'http://localhost:<%= port.tests %>/_SpecRunner.html'
+						target: 'http://localhost:<%= port.tests %>/spec-runner.html'
 					}
 				}
 			},
@@ -88,7 +90,7 @@ module.exports = function(grunt) {
 					keepalive: true,
 					port: '<%= port.coverage %>',
 					open: {
-						target: 'http://localhost:<%= port.coverage %>/reports/coverage/'
+						target: 'http://localhost:<%= port.coverage %>/reports/coverage/html'
 					}
 				}
 			},
@@ -241,29 +243,52 @@ module.exports = function(grunt) {
 		jasmine: {
 			options : {
 				specs: 'dev/es5/tests/**/*-spec.js',
+				keepRunner: true,
+				outfile: 'spec-runner.html',
 			},
 
 			phantom: {
 				options: {
-
-					// host: "http://127.0.0.1:" + phantomPort + "/",
 					display: 'full', // short or none
-					outfile: 'spec-runner.html',
 					template: require( 'grunt-template-jasmine-requirejs' ),
 					templateOptions: {
-						requireConfigFile: 'dev/require-config.js'
-					},
-					keepRunner: true
+						requireConfigFile: 'dev/require-config.js',
+						requireConfig: {
+							baseUrl: 'dev'
+						}
+					}
 				}
 			},
 
 			coverage: {
+
+				// relative to the gruntfile.
 				src: [ 'dev/es5/app/**/*.js' ],
 				options: {
 					template: require( 'grunt-template-jasmine-istanbul' ),
 					templateOptions: {
 						coverage: 'reports/coverage/coverage.json',
-						report: 'reports/coverage',
+						report: [{
+								type: 'html',
+							    options: {
+							        dir: 'reports/coverage/html'
+							    }
+							}, {
+								type: 'lcov',
+							    options: {
+							        dir: 'reports/coverage/lcov'
+							    }
+							}, {
+								type: 'text',
+							    options: {
+							        dir: 'reports/coverage/text'
+							    }
+							}, {
+								type: 'text-summary',
+							    options: {
+							        dir: 'reports/coverage/text-summary'
+							    }
+						}],
 						thresholds: {
 							lines: 75,
 							statements: 75,
@@ -271,97 +296,19 @@ module.exports = function(grunt) {
 							functions: 90
 						},
 
-						// 1. don"t replace src for the mixed-in template with instrumented sources
-						replace: false,
+						// 1. don't replace src for the mixed-in template with instrumented sources
+						replace: true,
 						template: require( 'grunt-template-jasmine-requirejs' ),
 						templateOptions: {
-							requireConfigFile: 'dev/require-config.js'
+							requireConfigFile: 'dev/require-config.js',
+							requireConfig: {
+								baseUrl: 'dev'
+							}
 						}
 					}
 				}
 			}
 		},
-
-		// meta: {
-		// 	package: grunt.file.readJSON('package.json'),
-		// 	src: {
-		// 		main: 'dev/es5',
-		// 		test: 'reports/tests/es5'
-		// 	},
-		// 	bin: {
-		// 		coverage: 'reports/coverage'
-		// 	}
-		// },
-		// jasmine: {
-		// 	coverage: {
-		// 		src: '<%= meta.src.main %>/**/*.js',
-		// 		options: {
-		// 			specs: '<%= meta.src.test %>/**/*-spec.js',
-		// 			template: require('grunt-template-jasmine-istanbul'),
-		// 			templateOptions: {
-		// 				coverage: '<%= meta.bin.coverage %>/coverage.json',
-		// 				report: [{
-		// 					type: 'html',
-		// 					options: {
-		// 						dir: '<%= meta.bin.coverage %>/html'
-		// 					}
-		// 				}, {
-		// 					type: 'text-summary'
-		// 				}],
-		// 				template: require('grunt-template-jasmine-requirejs'),
-		// 				templateOptions: {
-		// 					requireConfigFile: '<%= dir.dev %>require-config.js',
-		// 					requireConfig: {
-		// 						baseUrl: '.grunt/grunt-contrib-jasmine/dev'
-		// 					}
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// },
-
-		// jasmine: {
-		// 	options: {
-		// 		keepRunner: true,
-		// 		specs: '<%= dir.tests %>/es5/**/*-spec.js',
-		// 	},
-		// 	phantom: {
-		// 		options: {
-
-		// 			// host: "http://127.0.0.1:" + phantomPort + "/",
-		// 			display: 'full', // short or none
-		// 			template: require('grunt-template-jasmine-requirejs'),
-		// 			templateOptions: {
-		// 				requireConfigFile: '<%= dir.dev %>require-config.js',
-		// 				requireConfig: {
-		// 					baseUrl: 'dev'
-		// 				}
-		// 			}
-		// 		}
-		// 	},
-
-		// 	coverage: {
-		// 		// src: ['<%= dir.dev %>require-config.js', '<%= dir.es5 %>**/*.js'],
-		// 		options: {
-		// 			template: require('grunt-template-jasmine-istanbul'),
-		// 			templateOptions: {
-		// 				coverage: 'reports/coverage/coverage.json',
-		// 				report: 'reports/coverage',
-		// 				thresholds: {
-		// 					lines: 75,
-		// 					statements: 75,
-		// 					branches: 75,
-		// 					functions: 90
-		// 				},
-
-		// 				// 1. don"t replace src for the mixed-in template with instrumented sources
-		// 				replace: false,
-		// 				template: require('grunt-template-jasmine-requirejs'),
-		// 				templateOptions: '<%= jasmine.phantom.options.templateOptions %>'
-		// 			}
-		// 		}
-		// 	}
-		// },
 
 		eslint: {
 			options: {
@@ -500,17 +447,17 @@ module.exports = function(grunt) {
 		[
 			'clean:app',
 			'setup-docs',
-			'imagemin',
 			'handlebars',
 			'copy',
 			'babel:app',
 			'clean:css',
 			'compass',
 			'rename',
-			// 'setup-tests',
+			'setup-tests',
 			'requirejs',
 			'cssmin',
-			'imagemin'
+			'imagemin',
+			'jasmine:coverage'
 		]
 	);
 

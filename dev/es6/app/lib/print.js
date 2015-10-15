@@ -7,4 +7,4 @@
 // Here is a longer description of this module
 'use strict';
 
-export default ( msg ) => document.write( msg );
+export default ( msg ) => document.body.appendChild( document.createTextNode( msg ) );

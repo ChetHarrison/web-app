@@ -7,40 +7,40 @@ requirejs.config( {
 	baseUrl: '',
 
 	shim: {
-	    underscore: {
-	        exports: '_'
-	    },
-	    backbone: {
-	        deps: [ 'underscore', 'jquery' ],
-	        exports: 'Backbone'
-	    },
-	    bootstrap: {
-	        deps: [ 'jquery' ],
-	        exports: 'boostrap'
-	    },
-	    rx: {
-	        deps: [ 'marionette' ],
-	        exports: 'Rx'
-	    },
-	    'backbone.base-router': {
-	        deps: [ 'backbone', 'underscore' ],
-	        exports: 'BaseRouter'
-	    },
-	    'sanctuary': {
-	        deps: [ 'ramda' ]
-	    }
+		underscore: {
+			exports: '_'
+		},
+		backbone: {
+			deps: [ 'underscore', 'jquery' ],
+			exports: 'Backbone'
+		},
+		bootstrap: {
+			deps: [ 'jquery' ],
+			exports: 'boostrap'
+		},
+		rx: {
+			deps: [ 'marionette' ],
+			exports: 'Rx'
+		},
+		'backbone.base-router': {
+			deps: [ 'backbone', 'underscore' ],
+			exports: 'BaseRouter'
+		},
+		'sanctuary': {
+			deps: [ 'ramda' ]
+		}
 	},
 
 	paths: {
-		main 		: 'es5/app/main',
+		main		: 'es5/app/main',
 		messages	: 'es5/app/messages',
 		lib			: 'es5/app/lib',
 
-		bower 		: '../bower_modules',
-		backbone 	: '../bower_modules/backbone/backbone',
+		bower		: '../bower_modules',
+		backbone	: '../bower_modules/backbone/backbone',
 		marionette	: '../bower_modules/backbone.marionette/lib/backbone.marionette',
 		radio		: '../bower_modules/backbone.radio/build/backbone.radio',
-		jquery 		: '../bower_modules/jquery/jquery',
+		jquery		: '../bower_modules/jquery/jquery',
 		underscore	: '../bower_modules/underscore/underscore'
 	}
 } );

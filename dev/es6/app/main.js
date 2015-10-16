@@ -8,11 +8,14 @@
 'use strict';
 
 import Mn from 'marionette';
+import Bb from 'backbone'
 
 const app = new Mn.Application();
 
-app.on('start', function() {
-  Backbone.history.start();
-});
+app.backbone = Bb;
+
+app.on( 'start', () => Bb.history.start() );
+
+app.start();
 
 export default app;

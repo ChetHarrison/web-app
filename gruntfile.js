@@ -196,8 +196,8 @@ module.exports = function(grunt) {
 
 					// READ THIS!! 99% of requirejs pain is a combination
 					// of fucking up path configuration and shitty error
-					// messages, if any. So here is the key think to know
-					// this baseUrl needs to be set to the location of the
+					// messages, if any. So here is the key thing to remember
+					// This baseUrl needs to be set to the location of the
 					// require-config file AND the baseUrl property of the
 					// require-config file needs to be set to its current
 					// dir, as in `baseUrl: './'`

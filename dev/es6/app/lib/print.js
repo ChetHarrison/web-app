@@ -1,13 +1,10 @@
-//   Module      : main.js
+//   Module      : print.js
 // ----------------------------
-//		Description : kickoff the app.
+//		Description : return a function.
 //		Copyright   : (c) Nimble Chef Inc. 2015
 //		Maintainer  : chet.harrison@nimblechef.com
 //		Stability   : experimental
 // Here is a longer description of this module
 'use strict';
 
-import messages from 'messages';
-import print from 'lib/print';
-
-print( messages.getHello() );
+export default ( msg ) => document.body.appendChild( document.createTextNode( msg ) );

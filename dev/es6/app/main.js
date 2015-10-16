@@ -7,7 +7,12 @@
 // Here is a longer description of this module
 'use strict';
 
-import messages from 'messages';
-import print from 'lib/print';
+import Mn from 'marionette';
 
-print( messages.getHello() );
+const app = new Mn.Application();
+
+app.on('start', function() {
+  Backbone.history.start();
+});
+
+export default app;

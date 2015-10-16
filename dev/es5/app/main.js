@@ -1,4 +1,4 @@
-define(["exports", "messages", "lib/print"], function (exports, _messages, _libPrint) {
+define(["exports", "module", "marionette"], function (exports, module, _marionette) {
   //   Module      : main.js
   // ----------------------------
   //		Description : kickoff the app.
@@ -10,10 +10,14 @@ define(["exports", "messages", "lib/print"], function (exports, _messages, _libP
 
   var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-  var messages = _interopRequire(_messages);
+  var Mn = _interopRequire(_marionette);
 
-  var print = _interopRequire(_libPrint);
+  var app = new Mn.Application();
 
-  print(messages.getHello());
+  app.on("start", function () {
+    Backbone.history.start();
+  });
+
+  module.exports = app;
 });
 //# sourceMappingURL=main.js.map

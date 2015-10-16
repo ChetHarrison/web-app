@@ -1,19 +1,17 @@
-define(["exports", "main"], function (exports, _main) {
+define(["exports", "main", "marionette"], function (exports, _main, _marionette) {
 	"use strict";
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
 	var main = _interopRequire(_main);
 
+	var Marionette = _interopRequire(_marionette);
+
 	describe("main-spec.js", function () {
 		"use strict";
 
-		it("passes dummy test", function () {
-			expect(true).toBe(true);
-		});
-
-		it("passes dummy test", function () {
-			expect(true).toBe(true);
+		it("creates a Marionette Application", function () {
+			expect(main instanceof Marionette.Application).toBe(true);
 		});
 	});
 });

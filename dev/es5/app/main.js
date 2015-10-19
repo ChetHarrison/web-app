@@ -1,4 +1,4 @@
-define(["exports", "module", "marionette", "backbone"], function (exports, module, _marionette, _backbone) {
+define(["exports", "module", "config", "app"], function (exports, module, _config, _app) {
   //   Module      : main.js
   // ----------------------------
   //		Description : kickoff the app.
@@ -10,19 +10,11 @@ define(["exports", "module", "marionette", "backbone"], function (exports, modul
 
   var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-  var Mn = _interopRequire(_marionette);
+  var config = _interopRequire(_config);
 
-  var Bb = _interopRequire(_backbone);
+  var App = _interopRequire(_app);
 
-  var app = new Mn.Application();
-
-  app.backbone = Bb;
-
-  app.on("start", function () {
-    return Bb.history.start();
-  });
-
-  app.start();
+  App.start();
 
   module.exports = app;
 });

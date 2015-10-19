@@ -34,6 +34,8 @@ requirejs.config( {
 	paths: {
 		main		: 'es5/app/main',
 		messages	: 'es5/app/messages',
+		app			: 'es5/app/app',
+		config		: 'es5/app/config',
 		lib			: 'es5/app/lib',
 
 		bower		: '../bower_modules',

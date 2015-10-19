@@ -84,6 +84,8 @@
   "paths": {
     "main": "es5/app/main",
     "messages": "es5/app/messages",
+    "app": "es5/app/app",
+    "config": "es5/app/config",
     "lib": "es5/app/lib",
     "bower": "../bower_modules",
     "backbone": "../bower_modules/backbone/backbone",
@@ -103,6 +105,12 @@
 
     function launchTest() {
     require([
+      
+        
+        '../.grunt/grunt-contrib-jasmine/dev/es5/app/app' ,
+      
+        
+        '../.grunt/grunt-contrib-jasmine/dev/es5/app/config' ,
       
         
         '../.grunt/grunt-contrib-jasmine/dev/es5/app/lib/print' ,

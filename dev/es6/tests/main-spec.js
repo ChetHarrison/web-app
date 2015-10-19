@@ -1,11 +1,10 @@
-import App from 'main';
+import App from 'app';
 import Marionette from 'marionette';
-import Backbone from 'backbone';
 
-describe( 'main-spec.js', function() {
+describe( 'main-spec.js', () => {
 	'use strict';
 
-	it( 'creates a Marionette Application', function() {
+	it( 'creates a Marionette Application', () => {
 		expect( App instanceof Marionette.Application ).toBe( true );
 	} );
 
@@ -13,8 +12,9 @@ describe( 'main-spec.js', function() {
 		expect( App.backbone ).toBeDefined();
 	} );
 
-	it( 'backbone.history to have started', function() {
-		expect( Backbone.History.started ).toBe( true );
-	} );
+	// it( 'backbone.history to have started', () => {
+	// 	App.start();
+	// 	expect( App.backbone.History.started ).toBe( true );
+	// } );
 
 } );

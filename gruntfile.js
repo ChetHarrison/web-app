@@ -118,13 +118,19 @@ module.exports = function(grunt) {
 			options: {
 				livereload: true
 			},
-			change: {
+			js: {
 				files: [
 					'<%= dir.es6 %>**/*',
-					'dev/es6/tests/**/*',
+					'dev/require-config.js',
 					'gruntfile.js'
 				],
-				tasks: ['build']
+				tasks: [ 'build' ]
+			},
+			css: {
+				files: [
+					'<%= dir.bower %>sass-bootstrap/lib/**/*'
+				],
+				tasks: [ 'compass' ]
 			}
 		},
 
@@ -290,10 +296,10 @@ module.exports = function(grunt) {
 							    }
 						}],
 						thresholds: {
-							lines: 75,
-							statements: 75,
-							branches: 75,
-							functions: 90
+							lines: 50,
+							statements: 50,
+							branches: 50,
+							functions: 50
 						},
 
 						// 1. don't replace src for the mixed-in template with instrumented sources
@@ -451,7 +457,6 @@ module.exports = function(grunt) {
 			'copy',
 			'babel:app',
 			'clean:css',
-			'compass',
 			'rename',
 			'setup-tests',
 			'requirejs',
@@ -464,6 +469,6 @@ module.exports = function(grunt) {
 	grunt.registerTask(
 		'default',
 		'Watch files and run tests',
-		['watch']
+		[ 'watch' ]
 	);
 };

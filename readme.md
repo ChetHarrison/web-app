@@ -1,9 +1,9 @@
 # Web-App #
 A Marionette scaffold using the following libs:
 
-* Marinette - Backbone view library
+* Marionette - Backbone view library
 * Backbone - MV* library on top of jQuery and Underscore
-* RxJs - Ractive event streams
+* RxJs - Reactive event streams
 
 Web-App uses a Grunt task runner and the following tasks
 
@@ -13,12 +13,12 @@ Web-App uses a Grunt task runner and the following tasks
 * plato - complexity analysis
 * jasmine - unit testing
 * istanbul - test coverage
-* requirejs - js concatination optization and minification
+* requirejs - js concatenation optimization and minification
 * imagemin - image optimization
 * connect - create servers
 
 It includes 2 bash scripts `bash start` and `bash stop` that will
-fire up web pages with dev and prod versions of the app allong with
+fire up web pages with dev and prod versions of the app along with
 reports about the app. Web-App uses JSCS to enforce code style.
 
 ## Use ##

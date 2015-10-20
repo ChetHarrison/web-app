@@ -1,15 +1,20 @@
 import App from 'app';
 import Marionette from 'marionette';
-// import j$ from 'jasmine-jquery';
-
-// jasmine.getFixtures().fixturesPath = './fixtures';
+import jj from 'jasmine-jquery';
+import $ from 'jquery';
+import fixtures from 'fixtures';
 
 describe( 'main-spec.js', () => {
 	'use strict';
 
-	// beforeEach( () => {
-	// 	loadFixtures( 'main-fixture.html' );
-	// } );
+	beforeEach( () => {
+		$( 'body' ).append( '<div id="fixtures" style="display: none;"></div>' );
+		$( '#fixtures' ).append( fixtures.main( { content: 'Foo for you' } ) );
+	} );
+
+	afterEach( () => {
+		$( '#fixtures' ).detach();
+	} );
 
 	it( 'creates a Marionette Application', () => {
 		expect( App instanceof Marionette.Application ).toBe( true );

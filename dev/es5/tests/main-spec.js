@@ -1,4 +1,4 @@
-define(["exports", "app", "marionette"], function (exports, _app, _marionette) {
+define(["exports", "app", "marionette", "jasmine-jquery", "jquery", "fixtures"], function (exports, _app, _marionette, _jasmineJquery, _jquery, _fixtures) {
 	"use strict";
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
@@ -7,16 +7,23 @@ define(["exports", "app", "marionette"], function (exports, _app, _marionette) {
 
 	var Marionette = _interopRequire(_marionette);
 
-	// import j$ from 'jasmine-jquery';
+	var jj = _interopRequire(_jasmineJquery);
 
-	// jasmine.getFixtures().fixturesPath = './fixtures';
+	var $ = _interopRequire(_jquery);
+
+	var fixtures = _interopRequire(_fixtures);
 
 	describe("main-spec.js", function () {
 		"use strict";
 
-		// beforeEach( () => {
-		// 	loadFixtures( 'main-fixture.html' );
-		// } );
+		beforeEach(function () {
+			$("body").append("<div id=\"fixtures\" style=\"display: none;\"></div>");
+			$("#fixtures").append(fixtures.main({ content: "Foo for you" }));
+		});
+
+		afterEach(function () {
+			$("#fixtures").detach();
+		});
 
 		it("creates a Marionette Application", function () {
 			expect(App instanceof Marionette.Application).toBe(true);

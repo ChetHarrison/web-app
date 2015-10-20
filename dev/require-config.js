@@ -46,7 +46,7 @@ requirejs.config( {
 		rx				: '../bower_modules/rxjs/dist/rx.all',
 		sanctuary		: '../bower_modules/sanctuary/index',
 		firebase		: '../bower_modules/firebase/firebase',
-		backbonefire	: '../bower_modules/backbonefire/dist/backbonefire'
+		backbonefire	: '../bower_modules/backbonefire/dist/backbonefire',
 	}
 } );
 

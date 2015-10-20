@@ -1,3 +1,8 @@
+var testPaths = {
+	'jasmine-jquery' : '../node_modules/jasmine-jquery/lib/jasmine-jquery',
+	'fixtures' : 'es5/tests/fixtures'
+}
+
 module.exports = {
 	options : {
 		specs : 'dev/es5/tests/**/*-spec.js',
@@ -19,9 +24,7 @@ module.exports = {
 							exports : 'jasmine-jquery'
 						}
 					},
-					paths : {
-						'jasmine-jquery' : '../node_modules/jasmine-jquery/lib/jasmine-jquery'
-					}
+					paths : testPaths
 				}
 			}
 		}
@@ -76,9 +79,7 @@ module.exports = {
 								exports : 'jasmine-jquery'
 							}
 						},
-						paths : {
-							'jasmine-jquery' : '../node_modules/jasmine-jquery/lib/jasmine-jquery'
-						}
+						paths : testPaths
 					}
 				}
 			}

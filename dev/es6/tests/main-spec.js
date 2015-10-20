@@ -1,8 +1,15 @@
 import App from 'app';
 import Marionette from 'marionette';
+// import j$ from 'jasmine-jquery';
+
+// jasmine.getFixtures().fixturesPath = './fixtures';
 
 describe( 'main-spec.js', () => {
 	'use strict';
+
+	// beforeEach( () => {
+	// 	loadFixtures( 'main-fixture.html' );
+	// } );
 
 	it( 'creates a Marionette Application', () => {
 		expect( App instanceof Marionette.Application ).toBe( true );

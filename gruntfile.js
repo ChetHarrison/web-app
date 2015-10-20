@@ -1,450 +1,87 @@
 'use strict';
 
-var port = 9000;
+var gruntPath = './dev/grunt/',
 
-module.exports = function(grunt) {
+	configure = function( taskFileName ) {
+		var path = gruntPath + taskFileName + '.js';
+		return require( path );
+	},
 
-	require('time-grunt')(grunt);
+	tasks = [
+		'concat',
+		'connect',
+		'watch',
+		'clean',
+		'babel',
+		'handlebars',
+		'requirejs',
+		'copy',
+		'jasmine',
+		'plato',
+		'docco',
+		'compass',
+		'rename',
+		'cssmin',
+		'imagemin'
+	],
 
-	grunt.initConfig({
+	// build the grunt configuration object by
+	// requiring each tasks configuration file.
+	// Task configuration files shoule be located
+	// at the `gruntPath` at the top of this file..
+	configuration = tasks.reduce( function( obj, task ) {
+		obj[ task ] = configure( task );
+		return obj;
+	}, {} );
 
-		// setup       ---------------------------------------------
-		dir: {
-			dev: 'dev/',
-			generated: 'dev/generated/',
-			es6: 'dev/es6/',
-			es5: 'dev/es5/',
-			fonts: 'dev/fonts/',
-			css: 'dev/css/',
-			img: 'dev/img/',
-			prod: 'prod/',
-			bower: 'bower_modules/',
-			tests: 'dev/es5/tests/',
-			docs: 'reports/docs/',
-			analysis: 'reports/analysis/',
-			coverage: 'reports/coverage/'
-		},
+configuration.dir = require( gruntPath + 'dir-config.js' );
+configuration.pkg = require( './package.json' );
 
-		port: {
-			dev: port,
-			prod: port++,
-			tests: port++,
-			coverage: port++,
-			docs: port++,
-			analysis: port++
-		},
+module.exports = function( grunt ) {
 
-		pkg: grunt.file.readJSON('package.json'),
+	require( 'time-grunt' )( grunt );
 
-		// task config ---------------------------------------------
-		concat: {
-			options: {
-				stripBanners: true,
-				banner: '// ## v <%= pkg.version %> - ' +
-					'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-					'\'use strict\';\n',
-				process: function(src, filepath) {
-					return '// Source: ' + filepath + '\n' +
-						src.replace(/(^|\n)[ \t]*('use strict'|"use strict");?\s*/g, '$1');
-				}
-			},
-			docs: {
-				src: ['<%= dir.es6 %>**/*.js'],
-				dest: '<%= dir.docs %><%= pkg.name %>.js'
-			}
-		},
-
-		connect: {
-			options: {
-				hostname: 'localhost'
-			},
-			dev: {
-				options: {
-					keepalive: true,
-					port: '<%= port.dev %>',
-					open: {
-						target: 'http://localhost:<%= port.dev %>/dev/index.html'
-					}
-				}
-			},
-			prod: {
-				options: {
-					keepalive: true,
-					port: '<%= port.prod %>',
-					open: {
-						target: 'http://localhost:<%= port.prod %>/prod/index.html'
-					}
-				}
-			},
-			tests: {
-				options: {
-					keepalive: true,
-					port: '<%= port.tests %>',
-					open: {
-						target: 'http://localhost:<%= port.tests %>/spec-runner.html'
-					}
-				}
-			},
-			coverage: {
-				options: {
-					keepalive: true,
-					port: '<%= port.coverage %>',
-					open: {
-						target: 'http://localhost:<%= port.coverage %>/reports/coverage/html'
-					}
-				}
-			},
-			docs: {
-				options: {
-					keepalive: true,
-					port: '<%= port.docs %>',
-					open: {
-						target: 'http://localhost:<%= port.docs %>/<%= dir.docs %><%= pkg.name %>.html'
-					}
-				}
-			},
-			analysis: {
-				options: {
-					keepalive: true,
-					port: '<%= port.analysis %>',
-					open: {
-						target: 'http://localhost:<%= port.analysis %>/reports/analysis/'
-					}
-				}
-			}
-		},
-
-		watch: {
-			options: {
-				livereload: true
-			},
-			js: {
-				files: [
-					'<%= dir.es6 %>**/*',
-					'dev/require-config.js',
-					'gruntfile.js'
-				],
-				tasks: [ 'build' ]
-			},
-			css: {
-				files: [
-					'<%= dir.bower %>sass-bootstrap/lib/**/*'
-				],
-				tasks: [ 'compass' ]
-			}
-		},
-
-		clean: {
-			app: ['<%= dir.prod %>', '<%= dir.es5 %>'],
-			tests: ['<%= dir.tests %>es5'],
-			temp: ['.grunt', '.sass-cache'],
-			docs: ['reports/docs'],
-			css: ['dev/css']
-		},
-
-		babel: {
-			options: {
-				sourceMap: true,
-				modules: 'amd'
-			},
-			app: {
-				files: [{
-					expand: true,
-					cwd: '<%= dir.es6 %>app',
-					src: [
-						'**/*.js'
-					],
-
-					// Hack to place app and test transpiles in the
-					// same build dir.
-					dest: '<%= dir.es5 %>app'
-				}]
-			},
-			tests: {
-				files: [{
-					expand: true,
-					cwd: 'dev/es6/tests',
-					src: ['**/*-spec.js'],
-					dest: '<%= dir.es5 %>tests'
-				}]
-			}
-		},
-
-		handlebars: {
-			tpl: {
-				options: {
-
-					// this path is relative to the built tpl.js dest property
-					amd: 'bower_modules/handlebars/handlebars',
-
-					namespace: 'tpl',
-
-					// This converts our file names into camelCase names.
-					// For instance, some-name.okay.ext => someNameOkay
-					processName: function(filename) {
-						var path = require('path');
-						var basename = path.basename(filename, path.extname(filename));
-						return basename.replace(/[-\.]([a-z0-9] )/g, function(g) {
-							return g[1].toUpperCase();
-						});
-					}
-				},
-				files: [{
-					src: ['<%= dir.es6 %>app/**/*.hbs'],
-					dest: '<%= dir.es5 %>tpl/tpl.js'
-				}]
-			}
-		},
-
-		requirejs: {
-			build: {
-				options: {
-
-					// READ THIS!! 99% of requirejs pain is a combination
-					// of fucking up path configuration and shitty error
-					// messages, if any. So here is the key thing to remember
-					// This baseUrl needs to be set to the location of the
-					// require-config file AND the baseUrl property of the
-					// require-config file needs to be set to its current
-					// dir, as in `baseUrl: './'`
-					// https://github.com/jrburke/r.js/blob/master/build/example.build.js
-					baseUrl: 'dev',
-					// this path is relative to this tasks baseUrl option.
-					name: '../bower_modules/almond/almond',
-					include: ['require-config'],
-					insertRequire: ['require-config'],
-					wrap: true,
-					optimize: 'uglify',
-					out: '<%= dir.prod %>main.min.js',
-
-					// This path is relative to the gruntfile.
-					mainConfigFile: 'dev/require-config.js',
-					replaceRequireScript: [{
-
-						// this file must exist before it will be rewritten
-						// If you clean the the build dir then copy the
-						// original index with the require script ref into
-						// the build dir before running this task.
-						files: ['<%= dir.prod %>index.html'],
-						module: 'main',
-
-						// This path is relative to the "out" option.
-						modulePath: 'main.min'
-					}]
-				}
-			}
-		},
-
-		copy: {
-			index: {
-				files: [{
-					expand: true,
-					cwd: 'dev',
-					src: ['index.html'],
-					dest: '<%= dir.prod %>'
-				}]
-			}
-		},
-
-		jasmine: {
-			options : {
-				specs: 'dev/es5/tests/**/*-spec.js',
-				keepRunner: true,
-				outfile: 'spec-runner.html',
-			},
-
-			phantom: {
-				options: {
-					display: 'full', // short or none
-					template: require( 'grunt-template-jasmine-requirejs' ),
-					templateOptions: {
-						requireConfigFile: 'dev/require-config.js',
-						requireConfig: {
-							baseUrl: 'dev'
-						}
-					}
-				}
-			},
-
-			coverage: {
-
-				// relative to the gruntfile.
-				src: [ 'dev/es5/app/**/*.js' ],
-				options: {
-					template: require( 'grunt-template-jasmine-istanbul' ),
-					templateOptions: {
-						coverage: 'reports/coverage/coverage.json',
-						report: [{
-								type: 'html',
-							    options: {
-							        dir: 'reports/coverage/html'
-							    }
-							}, {
-								type: 'lcov',
-							    options: {
-							        dir: 'reports/coverage/lcov'
-							    }
-							}, {
-								type: 'text',
-							    options: {
-							        dir: 'reports/coverage/text'
-							    }
-							}, {
-								type: 'text-summary',
-							    options: {
-							        dir: 'reports/coverage/text-summary'
-							    }
-						}],
-						thresholds: {
-							lines: 50,
-							statements: 50,
-							branches: 50,
-							functions: 50
-						},
-
-						// 1. don't replace src for the mixed-in template with instrumented sources
-						replace: true,
-						template: require( 'grunt-template-jasmine-requirejs' ),
-						templateOptions: {
-							requireConfigFile: 'dev/require-config.js',
-							requireConfig: {
-								baseUrl: 'dev'
-							}
-						}
-					}
-				}
-			}
-		},
-
-		eslint: {
-			options: {
-				configFile: '.eslintrc'
-			},
-			es6: ['<%= dir.es6 %>**/*.js']
-		},
-
-		plato: {
-			report: {
-				options: {
-
-					// jshint: grunt.file.readJSON(".jshintrc")
-				},
-				files: {
-					'reports/analysis': ['<%= dir.es5 %>**/*.js']
-				}
-			}
-		},
-
-		docco: {
-			doc: {
-				src: ['<%= concat.docs.dest %>'],
-				options: {
-					output: '<%= dir.docs %>'
-				}
-			}
-		},
-
-		compass: {
-			options: {
-				sassDir: '<%= dir.bower %>sass-bootstrap/lib/',
-				imagesDir: '<%= dir.img %>',
-				javascriptsDir: '<%= dir.es5 %>',
-				fontsDir: '<%= dir.bower %>sass-bootstrap/fonts',
-				importPath: '<%= dir.bower %>sass-bootstrap/lib/',
-				relativeAssets: true
-			},
-			dev: {
-				options: {
-					cssDir: '<%= dir.dev %>css',
-					outputStyle: 'expanded',
-					environment: 'development',
-					debugInfo: true,
-					trace: true,
-					httpPath: '<%= dir.dev %>'
-				}
-			}
-		},
-
-		// Warning: This assumes there will only be
-		// one css file in the src dir. Otherwise it
-		// will attemt to name several files with the
-		// same name.
-		rename: {
-			main: {
-				files: [{
-					src: ['<%= dir.css %>*.css'],
-					dest: '<%= dir.css %>main.css'
-				}]
-			}
-		},
-
-		cssmin: {
-			dist: {
-				options: {
-					report: 'min',
-					sourceMap: true
-				},
-				files: {
-					'<%= dir.prod %>css/main.css': [
-						'<%= dir.css %>**/*.css'
-					]
-				}
-			}
-		},
-
-		imagemin: {
-			dist: {
-				files: [{
-					expand: true,
-					cwd: '<%= dir.img %>',
-					src: '**/*.{png,jpg,jpeg,ico}',
-					dest: '<%= dir.prod %>img'
-				}]
-			}
-		}
-	});
+	grunt.initConfig( configuration );
 
 	// ---------------------------------------------------------
 	// Load tasks but filter the grunt-template-jasmine files
-
-	require('matchdep')
-		.filterAll('grunt-*')
-		.filter(function(task) {
-			return task.indexOf('grunt-template-jasmine') === -1;
-		})
-		.forEach(grunt.loadNpmTasks);
+	require( 'matchdep' )
+		.filterAll( 'grunt-*' )
+		.filter( function( task ) {
+			return task.indexOf( 'grunt-template-jasmine' ) === -1;
+		} )
+		.forEach( grunt.loadNpmTasks );
 
 	// ---------------------------------------------------------
 	// Register tasks
-
 	grunt.registerTask(
 		'setup-docs',
 		'Generate documentation using docco.',
-		['clean:docs', 'concat:docs', 'docco']
+		[ 'clean:docs', 'concat:docs', 'docco' ]
 	);
 
 	grunt.registerTask(
 		'doc',
 		'Open a documentation server.',
-		['setup-docs', 'connect:docs']
+		[ 'setup-docs', 'connect:docs' ]
 	);
 
 	grunt.registerTask(
 		'setup-tests',
 		'Transpile test.',
-		['clean:tests', 'babel:tests', 'jasmine:phantom']
+		[ 'clean:tests', 'babel:tests', 'jasmine:phantom' ]
 	);
 
 	grunt.registerTask(
 		'coverage',
 		'Coverage report.',
-		['clean:tests', 'babel:tests', 'jasmine:coverage']
+		[ 'clean:tests', 'babel:tests', 'jasmine:coverage' ]
 	);
 
 	grunt.registerTask(
 		'test',
 		'Open a test server.',
-		['setup-tests', 'connect:tests']
+		[ 'setup-tests', 'connect:tests' ]
 	);
 
 	grunt.registerTask(

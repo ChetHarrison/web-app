@@ -7,8 +7,16 @@ define(["exports", "app", "marionette"], function (exports, _app, _marionette) {
 
 	var Marionette = _interopRequire(_marionette);
 
+	// import j$ from 'jasmine-jquery';
+
+	// jasmine.getFixtures().fixturesPath = './fixtures';
+
 	describe("main-spec.js", function () {
 		"use strict";
+
+		// beforeEach( () => {
+		// 	loadFixtures( 'main-fixture.html' );
+		// } );
 
 		it("creates a Marionette Application", function () {
 			expect(App instanceof Marionette.Application).toBe(true);

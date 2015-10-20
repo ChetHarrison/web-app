@@ -32,21 +32,23 @@ requirejs.config( {
 	},
 
 	paths: {
-		main		: 'es5/app/main',
-		messages	: 'es5/app/messages',
-		app			: 'es5/app/app',
-		config		: 'es5/app/config',
-		lib			: 'es5/app/lib',
+		main			: 'es5/app/main',
+		messages		: 'es5/app/messages',
+		app				: 'es5/app/app',
+		config			: 'es5/app/config',
+		lib				: 'es5/app/lib',
 
-		bower		: '../bower_modules',
-		backbone	: '../bower_modules/backbone/backbone',
-		marionette	: '../bower_modules/backbone.marionette/lib/backbone.marionette',
-		radio		: '../bower_modules/backbone.radio/build/backbone.radio',
-		jquery		: '../bower_modules/jquery/jquery',
-		underscore	: '../bower_modules/underscore/underscore'
+		marionette		: '../bower_modules/backbone.marionette/lib/backbone.marionette',
+		backbone		: '../bower_modules/backbone/backbone',
+		radio			: '../bower_modules/backbone.radio/build/backbone.radio',
+		jquery			: '../bower_modules/jquery/jquery',
+		underscore		: '../bower_modules/underscore/underscore',
+		rx				: '../bower_modules/rxjs/dist/rx.all',
+		sanctuary		: '../bower_modules/sanctuary/index',
+		firebase		: '../bower_modules/firebase/firebase',
+		backbonefire	: '../bower_modules/backbonefire/dist/backbonefire'
 	}
 } );
 
-// Start loading the main app file. Put all of
-// your application logic in there.
+// main.js will kick off the app.
 requirejs( [ 'main' ], function() { } );

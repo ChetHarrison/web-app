@@ -9,7 +9,9 @@
     "handlebars": "~4.0.3",
     "backbone.marionette": "~2.4.3",
     "backbonefire": "~0.5.1",
-    "backbone.radio": "~1.0.2"
+    "backbone.radio": "~1.0.2",
+    "rxjs": "~4.0.6",
+    "sanctuary": "~0.7.1"
   },
   "resolutions": {
     "underscore": ">=1.7.0"

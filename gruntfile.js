@@ -94,6 +94,7 @@ module.exports = function( grunt ) {
 			'copy',
 			'babel:app',
 			'clean:css',
+			'compass',
 			'rename',
 			'setup-tests',
 			'requirejs',

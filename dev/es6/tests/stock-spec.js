@@ -1,3 +1,12 @@
+//   Module      : stock-spec.js
+// ----------------------------
+//		Description : example using Sinonjs
+//		Copyright   : (c) Nimble Chef Inc. 2015
+//		Maintainer  : chet.harrison@nimblechef.com
+//		Stability   : experimental
+// Use Sinon to fake all your `XMLHttpRequest`s this
+// will speed you your front end tests.
+//
 import Stock from 'stock';
 import sinon from 'sinon';
 
@@ -6,7 +15,7 @@ describe( 'stock-spec.js', function() {
 
 	beforeEach( function() {
 
-		// fake XMLHttpRequest with Sinonjs
+		// fake `XMLHttpRequest` with Sinonjs
 		let fetchRequest;
 		this.xhr = sinon.useFakeXMLHttpRequest();
 		this.xhr.onCreate = function( request ) {

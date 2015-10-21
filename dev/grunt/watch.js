@@ -14,6 +14,6 @@ module.exports = {
 		files : [
 			'<%= dir.bower %>sass-bootstrap/lib/**/*'
 		],
-		tasks : [ 'compass' ]
+		tasks : [ 'clean:css', 'compass' ]
 	}
 };

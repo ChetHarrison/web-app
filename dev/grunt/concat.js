@@ -10,6 +10,8 @@ module.exports = {
 		}
 	},
 	docs : {
+		// Note: you will probably not want to document your tests.
+		// You can taget the `app` directory here.
 		src : [ '<%= dir.es6 %>**/*.js' ],
 		dest : '<%= dir.docs %><%= pkg.name %>.js'
 	}

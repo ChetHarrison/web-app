@@ -30,6 +30,13 @@ reports about the app. Web-App uses JSCS to enforce code style.
 * The default grunt task will watch file changes
 * Start reporting servers with `bash start`
 
+
+## Testing ##
+This app is set up to test with [Jasmine](https://github.com/jasmine/jasmine),
+using [Sinon](https://github.com/sinonjs/sinon) for faking
+`XMLHttpRequest`s and [Jasmine-jQuery](https://github.com/velesin/jasmine-jquery) for working with
+fixtures.
+
 ## Test Goals ##
 Source: “Backbone.js Testing.” iBooks
 

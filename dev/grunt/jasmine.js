@@ -1,6 +1,7 @@
 var testPaths = {
 	'jasmine-jquery' : '../node_modules/jasmine-jquery/lib/jasmine-jquery',
-	'fixtures' : 'es5/tests/fixtures'
+	'fixtures' 		 : 'es5/tests/fixtures',
+	'sinon'			 : '../node_modules/sinon/lib/sinon'
 }
 
 module.exports = {

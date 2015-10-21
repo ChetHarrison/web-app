@@ -1,4 +1,4 @@
-//   Module      : main.js
+//   Module      : app.js
 // ----------------------------
 //		Description : kickoff the app.
 //		Copyright   : (c) Nimble Chef Inc. 2015

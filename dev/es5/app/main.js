@@ -1,4 +1,4 @@
-define(["exports", "module", "config", "app"], function (exports, module, _config, _app) {
+define(["exports", "module", "config", "app", "stock"], function (exports, module, _config, _app, _stock) {
   //   Module      : main.js
   // ----------------------------
   //		Description : kickoff the app.
@@ -13,6 +13,8 @@ define(["exports", "module", "config", "app"], function (exports, module, _confi
   var config = _interopRequire(_config);
 
   var App = _interopRequire(_app);
+
+  var Stock = _interopRequire(_stock);
 
   App.start();
 

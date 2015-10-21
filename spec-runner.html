@@ -93,6 +93,7 @@
     "app": "es5/app/app",
     "config": "es5/app/config",
     "lib": "es5/app/lib",
+    "stock": "es5/app/stock",
     "marionette": "../bower_modules/backbone.marionette/lib/backbone.marionette",
     "backbone": "../bower_modules/backbone/backbone",
     "radio": "../bower_modules/backbone.radio/build/backbone.radio",
@@ -103,7 +104,8 @@
     "firebase": "../bower_modules/firebase/firebase",
     "backbonefire": "../bower_modules/backbonefire/dist/backbonefire",
     "jasmine-jquery": "../node_modules/jasmine-jquery/lib/jasmine-jquery",
-    "fixtures": "es5/tests/fixtures"
+    "fixtures": "es5/tests/fixtures",
+    "sinon": "../node_modules/sinon/lib/sinon"
   }
 });
     
@@ -130,11 +132,14 @@
         '../.grunt/grunt-contrib-jasmine/dev/es5/app/main' ,
       
         
-        '../.grunt/grunt-contrib-jasmine/dev/es5/app/messages' 
+        '../.grunt/grunt-contrib-jasmine/dev/es5/app/messages' ,
+      
+        
+        '../.grunt/grunt-contrib-jasmine/dev/es5/app/stock' 
       
     ],
     function(){
-      require(['dev/es5/tests/lib/print-spec.js','dev/es5/tests/main-spec.js','dev/es5/tests/messages-spec.js','.grunt/grunt-contrib-jasmine/grunt-template-jasmine-istanbul/reporter.js','.grunt/grunt-contrib-jasmine/reporter.js'], function(){
+      require(['dev/es5/tests/lib/print-spec.js','dev/es5/tests/main-spec.js','dev/es5/tests/messages-spec.js','dev/es5/tests/stock-spec.js','.grunt/grunt-contrib-jasmine/grunt-template-jasmine-istanbul/reporter.js','.grunt/grunt-contrib-jasmine/reporter.js'], function(){
         startTests();
       });
     }

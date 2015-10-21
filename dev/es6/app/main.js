@@ -9,6 +9,7 @@
 
 import config from 'config';
 import App from 'app';
+import Stock from 'stock';
 
 App.start();
 

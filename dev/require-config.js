@@ -37,6 +37,7 @@ requirejs.config( {
 		app				: 'es5/app/app',
 		config			: 'es5/app/config',
 		lib				: 'es5/app/lib',
+		stock			: 'es5/app/stock',
 
 		marionette		: '../bower_modules/backbone.marionette/lib/backbone.marionette',
 		backbone		: '../bower_modules/backbone/backbone',

@@ -33,7 +33,7 @@ reports about the app. Web-App uses JSCS to enforce code style.
 
 ## Grunt ##
 The gruntfile will probably look dramatically different from the
-ones you typically find out there. It build the typically extensive
+ones you typically find out there. It builds the typically extensive
 task configuration from a sequence of configuration files stored at
 `grunt/config`. It registers tasks from files in the `grunt/register-task`
 directory.

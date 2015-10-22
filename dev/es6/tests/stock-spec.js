@@ -10,33 +10,68 @@
 import Stock from 'stock';
 import sinon from 'sinon';
 
+const fetchStock = ( context ) => {
+	context.stock = new Stock();
+	context.stock.fetch();
+};
+
 describe( 'stock-spec.js', function() {
 	'use strict';
 
-	beforeEach( function() {
+	// Using Sinonjs `useFakeXMLHttpRequest`
+	describe( 'when using useFakeXMLHttpRequest', function() {
 
-		// fake `XMLHttpRequest` with Sinonjs
-		let fetchRequest;
-		this.xhr = sinon.useFakeXMLHttpRequest();
-		this.xhr.onCreate = function( request ) {
-			fetchRequest = request;
-		};
+		beforeEach( function() {
+			let fetchRequest;
+			this.xhr = sinon.useFakeXMLHttpRequest();
+			this.xhr.onCreate = function( request ) {
+				fetchRequest = request;
+			};
 
-		this.stock = new Stock();
-		this.stock.fetch();
+			fetchStock( this );
 
-		fetchRequest.respond(
-			200,
-			{ 'Content-Type' : 'application/json' },
-			'{ "sharePrice" : 20.13 }'
-		);
+			fetchRequest.respond(
+				200, {
+					'Content-Type': 'application/json'
+				},
+				'{ "sharePrice" : 20.13 }'
+			);
+		} );
+
+		afterEach( function() {
+			this.xhr.restore();
+		} );
+
+		it( 'should update is share price', function() {
+			expect( this.stock.sharePrice ).toEqual( 20.13 );
+		} );
+
 	} );
 
-	afterEach( function() {
-		this.xhr.restore();
+	// Using Sinonjs `fakeServer`
+	describe( 'when fetched using fakeServer', function() {
+
+		beforeEach( function() {
+			this.xhr = sinon.fakeServer.create();
+			this.xhr.respondWith( [
+				200, {
+					'Content-Type': 'application/json'
+				},
+				'{ "sharePrice": 20.13 }'
+			] );
+
+			fetchStock( this );
+
+			this.xhr.respond();
+		} );
+
+		afterEach( function() {
+			this.xhr.restore();
+		} );
+
+		it( 'should update its share price', function() {
+			expect( this.stock.sharePrice ).toEqual( 20.13 );
+		} );
 	} );
 
-	it( 'should update is share price', function() {
-		expect( this.stock.sharePrice ).toEqual( 20.13 );
-	} );
 } );

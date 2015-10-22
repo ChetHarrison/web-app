@@ -1,8 +1,15 @@
+//   Module      : requirejs.js
+// ----------------------------
+//		Description : configures the grunt task
+//		Copyright   : (c) Nimble Chef Inc. 2015
+//		Maintainer  : chet.harrison@nimblechef.com
+//		Stability   : experimental
+//
 module.exports = {
 	build : {
 		options : {
 
-			// READ THIS!! 99% of requirejs pain is a combination
+			// **READ THIS!!** 99% of requirejs pain is a combination
 			// of fucking up path configuration and shitty error
 			// messages, if any. So here is the key thing to remember
 			// This baseUrl needs to be set to the location of the

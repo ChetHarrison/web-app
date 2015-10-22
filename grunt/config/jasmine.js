@@ -1,3 +1,10 @@
+//   Module      : jasmine.js
+// ----------------------------
+//		Description : configures the grunt task
+//		Copyright   : (c) Nimble Chef Inc. 2015
+//		Maintainer  : chet.harrison@nimblechef.com
+//		Stability   : experimental
+//
 var testPaths = {
 	'jasmine-jquery' : '../node_modules/jasmine-jquery/lib/jasmine-jquery',
 	'fixtures' 		 : 'es5/tests/fixtures',

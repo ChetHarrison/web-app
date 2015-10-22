@@ -1,49 +1,45 @@
+//   Module      : gruntfile.js
+// ----------------------------
+//		Description : main task runner
+//		Copyright   : (c) Nimble Chef Inc. 2015
+//		Maintainer  : chet.harrison@nimblechef.com
+//		Stability   : experimental
+// This will set up all tasks configured in the
+// `grunt/config` directory and registered in the
+// `grunt/register-task` directory.
+//
 'use strict';
 
-var gruntPath = './dev/grunt/',
-
-	configure = function( taskFileName ) {
-		var path = gruntPath + taskFileName + '.js';
-		return require( path );
+var gruntPath = './grunt/',
+	gruntConfigPath = gruntPath + 'config/',
+	gruntRegisterPath = gruntPath + 'register-task/',
+	fs = require( 'fs' ),
+	path = require( 'path' ),
+	fileBaseNames = function( dirPath ) {
+		return fs.readdirSync( dirPath )
+			.map( function( fileName ) {
+				return path.basename( fileName, '.js' );
+			} );
 	},
-
-	tasks = [
-		'concat',
-		'connect',
-		'watch',
-		'clean',
-		'babel',
-		'handlebars',
-		'requirejs',
-		'copy',
-		'jasmine',
-		'plato',
-		'docco',
-		'compass',
-		'rename',
-		'cssmin',
-		'imagemin'
-	],
-
-	// build the grunt configuration object by
-	// requiring each tasks configuration file.
-	// Task configuration files shoule be located
-	// at the `gruntPath` at the top of this file..
-	configuration = tasks.reduce( function( obj, task ) {
-		obj[ task ] = configure( task );
-		return obj;
-	}, {} );
-
-configuration.dir = require( gruntPath + 'dir-config.js' );
-configuration.pkg = require( './package.json' );
+	configFileBaseNames = fileBaseNames( gruntConfigPath ),
+	registerTaskFileBaseNames = fileBaseNames( gruntRegisterPath );
 
 module.exports = function( grunt ) {
 
 	require( 'time-grunt' )( grunt );
 
+	// This will build a configuration object by reading each tasks
+	// config file in the `gruntConfigPath` as the top of this file.
+	var configuration = fs.readdirSync( gruntConfigPath )
+		.reduce( function( obj, taskFileName ) {
+			var fileBaseName = path.basename( taskFileName, '.js' );
+			obj[ fileBaseName ] = require( gruntConfigPath +  taskFileName );
+			return obj;
+		}, {} );
+	configuration.dir = require( gruntPath + 'dir-config.js' );
+	configuration.pkg = require( './package.json' );
 	grunt.initConfig( configuration );
 
-	// ---------------------------------------------------------
 	// Load tasks but filter the grunt-template-jasmine files
 	require( 'matchdep' )
 		.filterAll( 'grunt-*' )
@@ -52,61 +48,10 @@ module.exports = function( grunt ) {
 		} )
 		.forEach( grunt.loadNpmTasks );
 
-	// ---------------------------------------------------------
-	// Register tasks
-	grunt.registerTask(
-		'setup-docs',
-		'Generate documentation using docco.',
-		[ 'clean:docs', 'concat:docs', 'docco' ]
-	);
-
-	grunt.registerTask(
-		'doc',
-		'Open a documentation server.',
-		[ 'setup-docs', 'connect:docs' ]
-	);
-
-	grunt.registerTask(
-		'setup-tests',
-		'Transpile test.',
-		[ 'clean:tests', 'babel:tests', 'jasmine:phantom' ]
-	);
-
-	grunt.registerTask(
-		'coverage',
-		'Coverage report.',
-		[ 'clean:tests', 'babel:tests', 'jasmine:coverage' ]
-	);
-
-	grunt.registerTask(
-		'test',
-		'Open a test server.',
-		[ 'setup-tests', 'connect:tests' ]
-	);
-
-	grunt.registerTask(
-		'build',
-		'Build production files to "dest" folder.',
-		[
-			'clean:app',
-			'setup-docs',
-			'handlebars',
-			'copy',
-			'babel:app',
-			'clean:css',
-			'compass',
-			'rename',
-			'setup-tests',
-			'requirejs',
-			'cssmin',
-			'imagemin',
-			'jasmine:coverage'
-		]
-	);
-
-	grunt.registerTask(
-		'default',
-		'Watch files and run tests',
-		[ 'watch' ]
-	);
+	// Register tasks by reading all the files in the `gruntRegisterPath`
+	// listed at the top of this file.
+	fs.readdirSync( gruntRegisterPath )
+		.map( function( file ) {
+			require( gruntRegisterPath + file )( grunt );
+		} );
 };

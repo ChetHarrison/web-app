@@ -31,6 +31,13 @@ reports about the app. Web-App uses JSCS to enforce code style.
 * Start reporting servers with `bash start`
 
 
+## Grunt ##
+The gruntfile will probably look dramatically different from the
+ones you typically find out there. It build the typically extensive
+task configuration from a sequence of configuration files stored at
+`grunt/config`. It registers tasks from files in the `grunt/register-task`
+directory.
+
 ## Testing ##
 This app is set up to test with [Jasmine](https://github.com/jasmine/jasmine),
 using [Sinon](https://github.com/sinonjs/sinon) for faking

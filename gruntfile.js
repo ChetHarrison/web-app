@@ -14,15 +14,7 @@ var gruntPath = './grunt/',
 	gruntConfigPath = gruntPath + 'config/',
 	gruntRegisterPath = gruntPath + 'register-task/',
 	fs = require( 'fs' ),
-	path = require( 'path' ),
-	fileBaseNames = function( dirPath ) {
-		return fs.readdirSync( dirPath )
-			.map( function( fileName ) {
-				return path.basename( fileName, '.js' );
-			} );
-	},
-	configFileBaseNames = fileBaseNames( gruntConfigPath ),
-	registerTaskFileBaseNames = fileBaseNames( gruntRegisterPath );
+	path = require( 'path' );
 
 module.exports = function( grunt ) {
 

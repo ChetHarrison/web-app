@@ -37,6 +37,7 @@
     "grunt-template-jasmine-requirejs": "^0.2.3",
     "jasmine-jquery": "^2.1.1",
     "matchdep": "^1.0.0",
+    "sinon": "^1.17.4",
     "time-grunt": "~0.2.1"
   },
   "engines": {
